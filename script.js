@@ -5,6 +5,7 @@ let num1 = [];
 let num2 = [];
 let isOperandSelected = false;
 let amalgar;
+let result;
 
 numbers.forEach((number) => {
   number.addEventListener("click", () => {
@@ -22,8 +23,27 @@ operations.forEach((operation) => {
 });
 
 equal.addEventListener("click", () => {
-  console.log(amalgar);
-  display pak mikini va natige ro mizari toosh
+  switch (amalgar) {
+    case "+":
+      result = num1 + num2;
+      console.log(result);
+      break;
+
+    case "-":
+      result = num1 - num2;
+      console.log(result);
+      break;
+
+    case "*":
+      result = num1 * num2;
+      console.log(result);
+      break;
+
+    case "/":
+      result = num1 / num2;
+      console.log(result);
+      break;
+  }
 });
 function updateDisplay(value) {
   if (isOperandSelected) {
