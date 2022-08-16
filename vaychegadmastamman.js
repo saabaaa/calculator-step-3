@@ -44,6 +44,7 @@ function operator(operation) {
     result = parseFloat(1 / display.innerHTML);
     show.innerHTML = `1/(${display.innerHTML})`;
   } else {
+    show.innerHTML = num1 + operation;
     result;
   }
   isOperandSelected = true;
