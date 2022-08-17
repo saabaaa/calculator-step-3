@@ -85,3 +85,4 @@ keys.addEventListener("click", (event) => {
     digit(target.value);
   }
 });
+console.log("hi");
