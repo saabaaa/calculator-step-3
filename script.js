@@ -3,17 +3,26 @@ const display = document.querySelector("#display");
 const show = document.querySelector("#show");
 let num1 = "";
 let num2 = "";
-let result = "";
+let result = null;
+let operand = null;
 let displayValue = "0";
 let isOperandSelected = false;
+let isDotSelected = false;
 
 function digit(num) {
-  if (result !== "") {
-    result = "";
+  if (num == ".") {
+    if (isDotSelected) {
+      return;
+    }
+    isDotSelected = true;
+  }
+  if (result !== null) {
+    result = null;
+    num1 = "";
+    num2 = "";
     num1 = num;
   } else if (isOperandSelected == true) {
     num2 += num;
-    console.log(num2);
   } else {
     num1 += num;
   }
@@ -21,8 +30,9 @@ function digit(num) {
 }
 
 function updateDisplay() {
-  if (result !== "") {
+  if (result !== null) {
     display.innerHTML = result;
+    show.innerHTML += num2 = "=";
   } else if (num2 !== "") {
     display.innerHTML = num2;
   } else {
@@ -31,6 +41,17 @@ function updateDisplay() {
 }
 
 function operator(operation) {
+  isDotSelected = false;
+  if (result) {
+    num1 = result;
+    num2 = "";
+    result = null;
+  }
+  if (isOperandSelected && result == null) {
+    operand = operation;
+    // something
+    num2 = "";
+  }
   if (operation === "numberPow2") {
     result = parseFloat(Math.pow(display.innerHTML, 2));
     show.innerHTML = `sqr(${display.innerHTML}) `;
@@ -45,9 +66,32 @@ function operator(operation) {
     show.innerHTML = `1/(${display.innerHTML})`;
   } else {
     show.innerHTML = num1 + operation;
-    result;
+    operand = operation;
+    isOperandSelected = true;
   }
-  isOperandSelected = true;
+  updateDisplay();
+}
+
+function resultNumber() {
+  switch (operand) {
+    case "+": {
+      result = num1 + num2;
+      break;
+    }
+    case "-": {
+      result = num1 - num2;
+      break;
+    }
+    case "×": {
+      result = num1 * num2;
+      break;
+    }
+    case "÷": {
+      result = num1 / num2;
+      break;
+    }
+  }
+  isOperandSelected = false;
   updateDisplay();
 }
 
@@ -56,17 +100,8 @@ keys.addEventListener("click", (event) => {
 
   if (target.classList.contains("operator")) {
     operator(target.value);
-
-    console.log("operator", target.value);
-    return;
   }
-
-  if (target.classList.contains("decimal")) {
-    console.log("decimal", target.value);
-    return;
-  }
-
-  if (target.classList.contains("all-clear")) {
+  if (target.classList.contains("clear-all")) {
     console.log("clear", target.value);
     return;
   }
@@ -85,4 +120,3 @@ keys.addEventListener("click", (event) => {
     digit(target.value);
   }
 });
-console.log("hi");
