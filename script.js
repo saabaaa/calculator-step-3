@@ -16,6 +16,7 @@ function digit(num) {
     }
     isDotSelected = true;
   }
+  //read it again
   if (result !== null) {
     result = null;
     num1 = "";
@@ -47,11 +48,13 @@ function operator(operation) {
     num2 = "";
     result = null;
   }
+
   if (isOperandSelected && result == null) {
     operand = operation;
-    // something
+    // secondOperand();
     num2 = "";
   }
+
   if (operation === "numberPow2") {
     result = parseFloat(Math.pow(display.innerHTML, 2));
     show.innerHTML = `sqr(${display.innerHTML}) `;
@@ -75,7 +78,7 @@ function operator(operation) {
 function resultNumber() {
   switch (operand) {
     case "+": {
-      result = num1 + num2;
+      result = parseFloat(num1) + parseFloat(num2);
       break;
     }
     case "-": {
@@ -95,14 +98,18 @@ function resultNumber() {
   updateDisplay();
 }
 
+// function secondOperand(){}
+// function positiveNegative(){}
+
 keys.addEventListener("click", (event) => {
   const { target } = event;
 
   if (target.classList.contains("operator")) {
     operator(target.value);
   }
+
   if (target.classList.contains("clear-all")) {
-    console.log("clear", target.value);
+    console.log("clear-all", target.value);
     return;
   }
 
@@ -114,6 +121,11 @@ keys.addEventListener("click", (event) => {
   if (target.classList.contains("clear-one")) {
     console.log("clear-one", target.value);
     return;
+  }
+
+  if (target.classList.contains("result")) {
+    console.log("result", target.value);
+    resultNumber();
   }
 
   if (target.classList.contains("number")) {
