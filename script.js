@@ -33,7 +33,7 @@ function digit(num) {
 function updateDisplay() {
   if (result !== null) {
     display.innerHTML = result;
-    show.innerHTML += num2 = "=";
+    show.innerHTML += num2 + "=";
   } else if (num2 !== "") {
     display.innerHTML = num2;
   } else {
@@ -98,6 +98,16 @@ function resultNumber() {
   updateDisplay();
 }
 
+function resetCalculator() {
+  display.innerHTML = "0";
+  show.innerHTML = "";
+  num1 = "";
+  num2 = "";
+  isOperandSelected = false;
+
+  //  what else is going on
+}
+
 // function secondOperand(){}
 // function positiveNegative(){}
 
@@ -109,8 +119,7 @@ keys.addEventListener("click", (event) => {
   }
 
   if (target.classList.contains("clear-all")) {
-    console.log("clear-all", target.value);
-    return;
+    resetCalculator();
   }
 
   if (target.classList.contains("positive-negative")) {
