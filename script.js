@@ -23,9 +23,17 @@ function digit(num) {
     num2 = "";
     num1 = num;
   } else if (isOperandSelected == true) {
-    num2 += num;
+    if (num2 == "" && num == ".") {
+      num2 = "0.";
+    } else {
+      num2 += num;
+    }
   } else {
-    num1 += num;
+    if (num1 == "" && num == ".") {
+      num1 = "0.";
+    } else {
+      num1 += num;
+    }
   }
   updateDisplay();
 }
@@ -104,12 +112,15 @@ function resetCalculator() {
   num1 = "";
   num2 = "";
   isOperandSelected = false;
+  isDotSelected = false;
+  result = null;
+  operand = null;
 
   //  what else is going on
 }
 
 // function secondOperand(){}
-// function positiveNegative(){}
+function positiveNegative() {}
 
 keys.addEventListener("click", (event) => {
   const { target } = event;
@@ -123,8 +134,7 @@ keys.addEventListener("click", (event) => {
   }
 
   if (target.classList.contains("positive-negative")) {
-    console.log("positive-negative", target.value);
-    return;
+    positiveNegative();
   }
 
   if (target.classList.contains("clear-one")) {
