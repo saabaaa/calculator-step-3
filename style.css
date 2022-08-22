@@ -427,3 +427,7 @@ body {
   color: #70757a;
   font-size: 13px;
 }
+
+.click {
+  pointer-events: none;
+}
