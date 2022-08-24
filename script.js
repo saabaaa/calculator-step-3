@@ -38,17 +38,6 @@ function digit(num) {
   updateDisplay();
 }
 
-function updateDisplay() {
-  if (result !== null) {
-    display.innerHTML = result;
-    show.innerHTML += num2 + "=";
-  } else if (num2 !== "") {
-    display.innerHTML = num2;
-  } else {
-    display.innerHTML = num1;
-  }
-}
-
 function operator(operation) {
   isDotSelected = false;
   if (result) {
@@ -58,9 +47,7 @@ function operator(operation) {
   }
 
   if (isOperandSelected && result == null) {
-    operand = operation;
-    // secondOperand();
-    num2 = "";
+    secondOperand();
   }
 
   if (operation === "numberPow2") {
@@ -83,7 +70,33 @@ function operator(operation) {
   updateDisplay();
 }
 
+function secondOperand() {
+  switch (operand) {
+    case "+": {
+      num1 = parseFloat(num1) + parseFloat(num2);
+      break;
+    }
+    case "-": {
+      num1 = num1 - num2;
+      break;
+    }
+    case "×": {
+      num1 = num1 * num2;
+      break;
+    }
+    case "÷": {
+      num1 = num1 / num2;
+      break;
+    }
+  }
+  num2 = "";
+}
+
 function resultNumber() {
+  if (result) {
+    num1 = result;
+    result = "";
+  }
   switch (operand) {
     case "+": {
       result = parseFloat(num1) + parseFloat(num2);
@@ -102,9 +115,12 @@ function resultNumber() {
       break;
     }
   }
+  show.innerHTML = num1 + operand + num2 + "=";
   isOperandSelected = false;
   updateDisplay();
 }
+
+// (parseFloat(num1) *(operand?) parseFloat(num2)) / 100;
 
 function resetCalculator() {
   display.innerHTML = "0";
@@ -119,8 +135,44 @@ function resetCalculator() {
   //  what else is going on
 }
 
-// function secondOperand(){}
-function positiveNegative() {}
+function clearLastNumber() {
+  display.innerHTML = display.innerHTML.substring(
+    0,
+    display.innerHTML.length - 1
+  );
+  if (num2 !== "") {
+    num2 = display.innerHTML;
+  } else {
+    num1 = display.innerHTML;
+  }
+  updateDisplay();
+}
+
+function positiveNegative() {
+  if (display.innerHTML.includes("-")) {
+    display.innerHTML = display.innerHTML.replace("-", "");
+  } else {
+    display.innerHTML = "-" + display.innerHTML;
+  }
+  if (num2 !== "" && isOperandSelected == true) {
+    //saved "-"+num
+    num2 = display.innerHTML;
+  } else {
+    num1 = display.innerHTML;
+  }
+  updateDisplay();
+}
+
+function updateDisplay() {
+  if (result !== null) {
+    display.innerHTML = result;
+    // show.innerHTML += num2 + "=";
+  } else if (num2 !== "") {
+    display.innerHTML = num2;
+  } else {
+    display.innerHTML = num1;
+  }
+}
 
 keys.addEventListener("click", (event) => {
   const { target } = event;
@@ -137,13 +189,12 @@ keys.addEventListener("click", (event) => {
     positiveNegative();
   }
 
-  if (target.classList.contains("clear-one")) {
-    console.log("clear-one", target.value);
-    return;
+  if (target.classList.contains("clear-last-number")) {
+    console.log("clear-last-number", target.value);
+    clearLastNumber();
   }
 
   if (target.classList.contains("result")) {
-    console.log("result", target.value);
     resultNumber();
   }
 
