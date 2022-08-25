@@ -120,9 +120,13 @@ function resultNumber() {
   updateDisplay();
 }
 
-// (parseFloat(num1) *(operand?) parseFloat(num2)) / 100;
+function percentOperation() {
+  num2 = (num1 * num2) / 100;
+  show.innerHTML += num2;
+  updateDisplay();
+}
 
-function resetCalculator() {
+function clearAll() {
   display.innerHTML = "0";
   show.innerHTML = "";
   num1 = "";
@@ -135,17 +139,34 @@ function resetCalculator() {
   //  what else is going on
 }
 
-function clearLastNumber() {
-  display.innerHTML = display.innerHTML.substring(
-    0,
-    display.innerHTML.length - 1
-  );
-  if (num2 !== "") {
-    num2 = display.innerHTML;
+function clearEntry() {
+  if (isOperandSelected && result == null) {
+    num2 = "";
+    display.innerHTML = 0;
   } else {
-    num1 = display.innerHTML;
+    clearAll();
   }
-  updateDisplay();
+}
+
+function clearLastNumber() {
+  if (isOperandSelected && num2 == "") {
+  } else {
+    display.innerHTML = display.innerHTML.substring(
+      0,
+      display.innerHTML.length - 1
+    );
+    if (num2 !== "") {
+      num2 = display.innerHTML;
+      if (display.innerHTML.length == "0") {
+        display.innerHTML = "0";
+      }
+    } else {
+      num1 = display.innerHTML;
+      if (display.innerHTML.length == "0") {
+        display.innerHTML = "0";
+      }
+    }
+  }
 }
 
 function positiveNegative() {
@@ -166,7 +187,6 @@ function positiveNegative() {
 function updateDisplay() {
   if (result !== null) {
     display.innerHTML = result;
-    // show.innerHTML += num2 + "=";
   } else if (num2 !== "") {
     display.innerHTML = num2;
   } else {
@@ -182,7 +202,11 @@ keys.addEventListener("click", (event) => {
   }
 
   if (target.classList.contains("clear-all")) {
-    resetCalculator();
+    clearAll();
+  }
+
+  if (target.classList.contains("clear-entry")) {
+    clearEntry();
   }
 
   if (target.classList.contains("positive-negative")) {
@@ -200,5 +224,9 @@ keys.addEventListener("click", (event) => {
 
   if (target.classList.contains("number")) {
     digit(target.value);
+  }
+
+  if (target.classList.contains("percent")) {
+    percentOperation();
   }
 });
