@@ -1,6 +1,12 @@
 const keys = document.querySelector(".numbers");
 const display = document.querySelector("#display");
 const show = document.querySelector("#show");
+//hiss
+const historyMemoryTitle = document.querySelector(".his-memmory");
+const historyList = document.querySelector(".history-calculator");
+const trashBin = document.querySelector(".trash-bin");
+let historyItem = [];
+
 let num1 = "";
 let num2 = "";
 let result = null;
@@ -8,6 +14,21 @@ let operand = null;
 let displayValue = "0";
 let isOperandSelected = false;
 let isDotSelected = false;
+
+//history
+
+function updateHistory() {
+  console.log("hsi");
+  historyList.innerHTML = "";
+  historyItem.forEach((element) => {
+    historyList.innerHTML += `<li>${element}</li>`;
+  });
+}
+
+trashBin.addEventListener("click", () => {
+  historyItem = [];
+  historyList.innerHTML = " There's no history yet";
+});
 
 function digit(num) {
   if (num == ".") {
@@ -71,24 +92,30 @@ function operator(operation) {
 }
 
 function secondOperand() {
+  let secondResult = null;
   switch (operand) {
     case "+": {
-      num1 = parseFloat(num1) + parseFloat(num2);
+      secondResult = parseFloat(num1) + parseFloat(num2);
       break;
     }
     case "-": {
-      num1 = num1 - num2;
+      secondResult = num1 - num2;
       break;
     }
     case "×": {
-      num1 = num1 * num2;
+      secondResult = num1 * num2;
       break;
     }
     case "÷": {
-      num1 = num1 / num2;
+      secondResult = num1 / num2;
       break;
     }
   }
+  let item = `${num1} ${operand} ${num2}=<br> ${secondResult}`;
+  historyItem.push(item);
+  //chera num1=secondResult?
+  updateHistory();
+  num1 = secondResult;
   num2 = "";
 }
 
@@ -118,6 +145,10 @@ function resultNumber() {
   show.innerHTML = num1 + operand + num2 + "=";
   isOperandSelected = false;
   updateDisplay();
+  let item = show.innerHTML + "<br>" + display.innerHTML;
+  historyItem.push(item);
+  updateHistory();
+  console.log(historyItem);
 }
 
 function percentOperation() {
