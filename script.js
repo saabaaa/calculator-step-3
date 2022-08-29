@@ -1,11 +1,7 @@
+import { updateHistory, historyData, historyList } from "./history";
 const keys = document.querySelector(".numbers");
 const display = document.querySelector("#display");
 const show = document.querySelector("#show");
-//hiss
-const historyMemoryTitle = document.querySelector(".his-memmory");
-const historyList = document.querySelector(".history-calculator");
-const trashBin = document.querySelector(".trash-bin");
-let historyItem = [];
 
 let num1 = "";
 let num2 = "";
@@ -14,21 +10,6 @@ let operand = null;
 let displayValue = "0";
 let isOperandSelected = false;
 let isDotSelected = false;
-
-//history
-
-function updateHistory() {
-  console.log("hsi");
-  historyList.innerHTML = "";
-  historyItem.forEach((element) => {
-    historyList.innerHTML += `<li>${element}</li>`;
-  });
-}
-
-trashBin.addEventListener("click", () => {
-  historyItem = [];
-  historyList.innerHTML = " There's no history yet";
-});
 
 function digit(num) {
   if (num == ".") {
@@ -112,7 +93,7 @@ function secondOperand() {
     }
   }
   let item = `${num1} ${operand} ${num2}=<br> ${secondResult}`;
-  historyItem.push(item);
+  historyData.push(item);
   //chera num1=secondResult?
   updateHistory();
   num1 = secondResult;
@@ -146,9 +127,9 @@ function resultNumber() {
   isOperandSelected = false;
   updateDisplay();
   let item = show.innerHTML + "<br>" + display.innerHTML;
-  historyItem.push(item);
+  historyData.push(item);
   updateHistory();
-  console.log(historyItem);
+  console.log(historyData);
 }
 
 function percentOperation() {
