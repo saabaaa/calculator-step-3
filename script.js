@@ -1,4 +1,4 @@
-import { updateHistory, historyData, historyList } from "./history";
+import { updateHistory, historyData } from "./history.js";
 const keys = document.querySelector(".numbers");
 const display = document.querySelector("#display");
 const show = document.querySelector("#show");
@@ -242,3 +242,4 @@ keys.addEventListener("click", (event) => {
     percentOperation();
   }
 });
+export { display };
