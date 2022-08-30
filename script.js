@@ -1,10 +1,12 @@
 import { updateHistory, historyData } from "./history.js";
-const keys = document.querySelector(".numbers");
+const keys = document.querySelector(".buttons");
 const display = document.querySelector("#display");
 const show = document.querySelector("#show");
+const numbers = {
+  num1: "",
+  num2: "",
+};
 
-let num1 = "";
-let num2 = "";
 let result = null;
 let operand = null;
 let displayValue = "0";
@@ -21,20 +23,20 @@ function digit(num) {
   //read it again
   if (result !== null) {
     result = null;
-    num1 = "";
-    num2 = "";
-    num1 = num;
+    numbers.num1 = "";
+    numbers.num2 = "";
+    numbers.num1 = num;
   } else if (isOperandSelected == true) {
-    if (num2 == "" && num == ".") {
-      num2 = "0.";
+    if (numbers.num2 == "" && num == ".") {
+      numbers.num2 = "0.";
     } else {
-      num2 += num;
+      numbers.num2 += num;
     }
   } else {
-    if (num1 == "" && num == ".") {
-      num1 = "0.";
+    if (numbers.num1 == "" && num == ".") {
+      numbers.num1 = "0.";
     } else {
-      num1 += num;
+      numbers.num1 += num;
     }
   }
   updateDisplay();
@@ -43,8 +45,8 @@ function digit(num) {
 function operator(operation) {
   isDotSelected = false;
   if (result) {
-    num1 = result;
-    num2 = "";
+    numbers.num1 = result;
+    numbers.num2 = "";
     result = null;
   }
 
@@ -65,7 +67,7 @@ function operator(operation) {
     result = parseFloat(1 / display.innerHTML);
     show.innerHTML = `1/(${display.innerHTML})`;
   } else {
-    show.innerHTML = num1 + operation;
+    show.innerHTML = numbers.num1 + operation;
     operand = operation;
     isOperandSelected = true;
   }
@@ -76,54 +78,54 @@ function secondOperand() {
   let secondResult = null;
   switch (operand) {
     case "+": {
-      secondResult = parseFloat(num1) + parseFloat(num2);
+      secondResult = parseFloat(numbers.num1) + parseFloat(numbers.num2);
       break;
     }
     case "-": {
-      secondResult = num1 - num2;
+      secondResult = numbers.num1 - numbers.num2;
       break;
     }
     case "×": {
-      secondResult = num1 * num2;
+      secondResult = numbers.num1 * numbers.num2;
       break;
     }
     case "÷": {
-      secondResult = num1 / num2;
+      secondResult = numbers.num1 / numbers.num2;
       break;
     }
   }
-  let item = `${num1} ${operand} ${num2}=<br> ${secondResult}`;
+  let item = `${numbers.num1} ${operand} ${numbers.num2}=<br> ${secondResult}`;
   historyData.push(item);
-  //chera num1=secondResult?
+  //chera numbers.num1=secondResult?
   updateHistory();
-  num1 = secondResult;
-  num2 = "";
+  numbers.num1 = secondResult;
+  numbers.num2 = "";
 }
 
 function resultNumber() {
   if (result) {
-    num1 = result;
+    numbers.num1 = result;
     result = "";
   }
   switch (operand) {
     case "+": {
-      result = parseFloat(num1) + parseFloat(num2);
+      result = parseFloat(numbers.num1) + parseFloat(numbers.num2);
       break;
     }
     case "-": {
-      result = num1 - num2;
+      result = numbers.num1 - numbers.num2;
       break;
     }
     case "×": {
-      result = num1 * num2;
+      result = numbers.num1 * numbers.num2;
       break;
     }
     case "÷": {
-      result = num1 / num2;
+      result = numbers.num1 / numbers.num2;
       break;
     }
   }
-  show.innerHTML = num1 + operand + num2 + "=";
+  show.innerHTML = numbers.num1 + operand + numbers.num2 + "=";
   isOperandSelected = false;
   updateDisplay();
   let item = show.innerHTML + "<br>" + display.innerHTML;
@@ -133,16 +135,16 @@ function resultNumber() {
 }
 
 function percentOperation() {
-  num2 = (num1 * num2) / 100;
-  show.innerHTML += num2;
+  numbers.num2 = (numbers.num1 * numbers.num2) / 100;
+  show.innerHTML += numbers.num2;
   updateDisplay();
 }
 
 function clearAll() {
   display.innerHTML = "0";
   show.innerHTML = "";
-  num1 = "";
-  num2 = "";
+  numbers.num1 = "";
+  numbers.num2 = "";
   isOperandSelected = false;
   isDotSelected = false;
   result = null;
@@ -153,7 +155,7 @@ function clearAll() {
 
 function clearEntry() {
   if (isOperandSelected && result == null) {
-    num2 = "";
+    numbers.num2 = "";
     display.innerHTML = 0;
   } else {
     clearAll();
@@ -161,19 +163,19 @@ function clearEntry() {
 }
 
 function clearLastNumber() {
-  if (isOperandSelected && num2 == "") {
+  if (isOperandSelected && numbers.num2 == "") {
   } else {
     display.innerHTML = display.innerHTML.substring(
       0,
       display.innerHTML.length - 1
     );
-    if (num2 !== "") {
-      num2 = display.innerHTML;
+    if (numbers.num2 !== "") {
+      numbers.num2 = display.innerHTML;
       if (display.innerHTML.length == "0") {
         display.innerHTML = "0";
       }
     } else {
-      num1 = display.innerHTML;
+      numbers.num1 = display.innerHTML;
       if (display.innerHTML.length == "0") {
         display.innerHTML = "0";
       }
@@ -187,11 +189,11 @@ function positiveNegative() {
   } else {
     display.innerHTML = "-" + display.innerHTML;
   }
-  if (num2 !== "" && isOperandSelected == true) {
+  if (numbers.num2 !== "" && isOperandSelected == true) {
     //saved "-"+num
-    num2 = display.innerHTML;
+    numbers.num2 = display.innerHTML;
   } else {
-    num1 = display.innerHTML;
+    numbers.num1 = display.innerHTML;
   }
   updateDisplay();
 }
@@ -199,10 +201,10 @@ function positiveNegative() {
 function updateDisplay() {
   if (result !== null) {
     display.innerHTML = result;
-  } else if (num2 !== "") {
-    display.innerHTML = num2;
+  } else if (numbers.num2 !== "") {
+    display.innerHTML = numbers.num2;
   } else {
-    display.innerHTML = num1;
+    display.innerHTML = numbers.num1;
   }
 }
 
@@ -242,4 +244,4 @@ keys.addEventListener("click", (event) => {
     percentOperation();
   }
 });
-export { display };
+export { display, numbers, isOperandSelected };
